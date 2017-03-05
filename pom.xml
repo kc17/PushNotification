@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javac.compile.level>1.8</javac.compile.level>
 		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
-		<jersey.version>2.23.1</jersey.version>
+		<spring.version>4.3.6.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -29,11 +29,10 @@
 			<artifactId>apns</artifactId>
 			<version>0.2.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.ganyo</groupId>
 			<artifactId>gcm-server</artifactId>
-			<version>1.0.2</version>
+			<version>1.1.0</version>
 		</dependency>
 		<!-- Notification End -->
 
@@ -45,34 +44,46 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
-			<version>${jersey.version}</version>
-			<scope>provided</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet-core</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<!-- Web Application End -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.2.4.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>6.0.4</version>
+		</dependency>
 
 	</dependencies>
 
 	<build>
-		<finalName>PushNotification</finalName>
+		<finalName>push</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<!-- <configuration> <path>/push_notification</path> </configuration> -->
-				<!--<webResources> -->
-				<!--<resource> -->
-				<!--<directory>libs</directory> -->
-				<!--<targetPath>WEB-INF/lib</targetPath> -->
-				<!--</resource> -->
-				<!--</webResources> -->
-				<!--</configuration> -->
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
