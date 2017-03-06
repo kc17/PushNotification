@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,16 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "app_clients")
 public class AppClient {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "app_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "app_id", nullable = false)
 	private App app;
 
 	private String registrant;
@@ -36,6 +39,7 @@ public class AppClient {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public App getApp() {
 		return app;
 	}

@@ -8,29 +8,30 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import push.model.App;
+import push.model.AppClient;
 
 @Repository
 @Transactional
-public class AppDao {
+public class AppClientDao {
 
 	@Inject
 	private SessionFactory sessionFactory;
-
+	
 	@SuppressWarnings("unchecked")
-	public List<App> list() {
+	public List<AppClient> listByAppId(Long appId) {
 		return sessionFactory
 				.getCurrentSession()
-				.createQuery("FROM App")
+				.createQuery("FROM AppClient WHERE app.id=:appId")
+				.setParameter("appId", appId)
 				.getResultList();
 	}
-
-	public App get(Integer id) {
-		return (App) sessionFactory
+	
+	public AppClient get(Long id) {
+		return (AppClient) sessionFactory
 				.getCurrentSession()
-				.createQuery("FROM App WHERE id=:id")
+				.createQuery("FROM AppClient WHERE id=:id")
 				.setParameter("id", id)
 				.getSingleResult();
 	}
-
+	
 }
