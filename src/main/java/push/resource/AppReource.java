@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,10 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import push.dao.AppDao;
 import push.model.App;
+import push.utils.ObjectMapperUtil;
 
 @RestController
 @RequestMapping(value = "/apps")
 public class AppReource {
+
+	@Value("${apns.certificate.location}")
+	private String path;
 
 	@Inject
 	private AppDao dao;
@@ -38,11 +42,24 @@ public class AppReource {
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, consumes = { "multipart/form-data" })
-	public void create(@RequestParam String metadata, @RequestPart("file") MultipartFile certificateFile)
+	public void create(@RequestParam("metadata") String metadata,
+			@RequestPart(name = "file", required = false) MultipartFile certificateFile)
 			throws IllegalStateException, IOException {
 
-		File cert = new File("/Users/kenwang/tmp/" + certificateFile.getOriginalFilename());
-		certificateFile.transferTo(cert);
+		App app = ObjectMapperUtil.toObject(metadata, App.class);
+		dao.save(app);
+
+		if (certificateFile != null) {
+
+			String originalFilename = certificateFile.getOriginalFilename();
+			String filename = app.getId() + originalFilename.substring(originalFilename.indexOf("."));
+
+			File cert = new File(path + filename);
+			certificateFile.transferTo(cert);
+			app.setApnsCertificateFileLocation(cert.getName());
+
+			dao.update(app);
+		}
 
 	}
 
@@ -60,14 +77,14 @@ public class AppReource {
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public App get(@PathVariable Integer id) {
+	public App get(@PathVariable Long id) {
 		return dao.get(id);
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-	public void update(@RequestBody App app,
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", consumes = { "multipart/form-data" })
+	public void update(@RequestParam(name = "metadata") String metadata,
 			@RequestParam(value = "file", required = false) MultipartFile certificateFile) {
 	}
 

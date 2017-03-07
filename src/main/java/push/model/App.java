@@ -5,10 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-enum AppStatus {
-	Development, Production
-}
 
 @Entity
 @Table(name = "apps")
@@ -80,4 +78,9 @@ public class App {
 		this.status = status;
 	}
 
+	
+	@Transient
+	public boolean isProductionVersion() {
+		return AppStatus.Production.equals(getStatus());
+	}
 }

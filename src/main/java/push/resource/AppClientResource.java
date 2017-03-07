@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import push.dao.AppClientDao;
+import push.infra.AppParam;
+import push.model.App;
 import push.model.AppClient;
 
 @RestController
@@ -22,14 +24,14 @@ public class AppClientResource {
 
 	@Inject
 	private AppClientDao dao;
-	
+
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	public List<AppClient> list(@PathVariable Long appId) {
 		return dao.listByAppId(appId);
 	}
-	
+
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
@@ -39,8 +41,30 @@ public class AppClientResource {
 	
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.POST)
-	public void create(@RequestBody AppClient client) {
+	@RequestMapping(method = RequestMethod.GET, value = "/{registrationId}")
+	public AppClient get(@PathVariable String registrationId) {
+		return dao.get(registrationId);
 	}
-	
+
+	@ResponseStatus(value = HttpStatus.OK)
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)
+	public void register(@AppParam(name = "appId") App app, @RequestBody AppClient client) {
+		client.setApp(app);
+		dao.save(client);
+	}
+
+	@ResponseStatus(value = HttpStatus.OK)
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.PUT)
+	public void update(@AppParam(name = "appId") App app, @RequestBody AppClient client) {
+		dao.update(client);
+	}
+
+	@ResponseStatus(value = HttpStatus.OK)
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public void unregister(@PathVariable Long id) {
+	}
+
 }

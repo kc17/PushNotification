@@ -34,4 +34,20 @@ public class AppClientDao {
 				.getSingleResult();
 	}
 	
+	public AppClient get(String  registrationId) {
+		return (AppClient) sessionFactory
+				.getCurrentSession()
+				.createQuery("FROM AppClient WHERE registrationId=:registrationId")
+				.setParameter("registrationId", registrationId)
+				.getSingleResult();
+	}
+	
+	public void save(AppClient appClient) {
+		sessionFactory.getCurrentSession().save(appClient);
+	}
+	
+	public void update(AppClient appClient) {
+		sessionFactory.getCurrentSession().saveOrUpdate(appClient);
+	}
+	
 }

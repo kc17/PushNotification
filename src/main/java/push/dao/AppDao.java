@@ -25,12 +25,21 @@ public class AppDao {
 				.getResultList();
 	}
 
-	public App get(Integer id) {
+	public App get(Long id) {
 		return (App) sessionFactory
 				.getCurrentSession()
 				.createQuery("FROM App WHERE id=:id")
 				.setParameter("id", id)
 				.getSingleResult();
 	}
+	
+	public void save(App app) {
+		sessionFactory.getCurrentSession().save(app);
+	}
+	
+	public void update(App app) {
+		sessionFactory.getCurrentSession().saveOrUpdate(app);
+	}
+
 
 }
