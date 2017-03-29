@@ -1,4 +1,4 @@
-package push.executor;
+package push.service.executor;
 
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsNotification;
@@ -7,15 +7,10 @@ import com.notnoop.apns.ApnsServiceBuilder;
 
 import push.model.AppClient;
 
-public class APNSPushExecutor implements PushExecutor {
+public class APNSPushExecutor extends PushExecutor {
 
-	private AppClient client;
-	private String content;
-
-	@Override
-	public void init(AppClient client, String content) {
-		this.client = client;
-		this.content = content;
+	public APNSPushExecutor(AppClient client, String content) {
+		super(client, content);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package push.executor;
+package push.service.executor;
 
 import java.io.IOException;
 
@@ -9,15 +9,13 @@ import com.google.android.gcm.server.Sender;
 
 import push.model.AppClient;
 
-public class GCMPushExecutor implements PushExecutor {
+public class GCMPushExecutor extends PushExecutor {
 
 	private AppClient client;
 	private String content;
 
-	@Override
-	public void init(AppClient client, String content) {
-		this.client = client;
-		this.content = content;
+	public  GCMPushExecutor(AppClient client, String content) {
+		super(client, content);
 	}
 	
 	@Override

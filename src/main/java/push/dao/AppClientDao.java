@@ -18,6 +18,16 @@ public class AppClientDao {
 	private SessionFactory sessionFactory;
 	
 	@SuppressWarnings("unchecked")
+	public List<AppClient> list(Long appId, List<Long> ids) {
+		return sessionFactory
+				.getCurrentSession()
+				.createQuery("FROM AppClient WHERE app.id=:appId AND id IN (:id)")
+				.setParameter("id", ids)
+				.setParameter("appId", appId)
+				.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<AppClient> listByAppId(Long appId) {
 		return sessionFactory
 				.getCurrentSession()
